@@ -6,7 +6,7 @@ Ra9 combines persistent shell sessions, context-aware memory, goal planning, too
 
 ## Architecture
 
-Ra9 is a TypeScript monorepo managed with [pnpm](https://pnpm.io) workspaces and [Turborepo](https://turbo.build).
+Ra9 is a TypeScript monorepo managed with [Bun](https://bun.sh) workspaces and [Turborepo](https://turbo.build).
 
 ```
 Ra9/
@@ -42,7 +42,7 @@ Ra9/
 
 - **Language** — TypeScript 6, targeting ES2022
 - **Runtime** — Node.js
-- **Monorepo** — pnpm workspaces + Turborepo
+- **Monorepo** — Bun workspaces + Turborepo
 - **CLI** — Commander.js, Chalk
 - **Server** — Express 5
 - **Validation** — Zod
@@ -53,38 +53,38 @@ Ra9/
 ### Prerequisites
 
 - Node.js 20+
-- pnpm 10+
+- Bun 1.1+
 
 ### Install
 
 ```bash
-pnpm install
+bun install
 ```
 
 ### Development
 
 ```bash
 # Run all apps in dev mode
-pnpm dev
+bun dev
 
 # Run just the CLI
-pnpm --filter @repo/cli dev
+bun --filter @repo/cli dev
 
 # Run just the server
-pnpm --filter @repo/server dev
+bun --filter @repo/server dev
 ```
 
 ### Build
 
 ```bash
-pnpm build
+bun build
 ```
 
 ### CLI Usage
 
 ```bash
 # Send a prompt to the agent
-pnpm --filter @repo/cli dev chat "explain this function"
+bun --filter @repo/cli dev chat "explain this function"
 ```
 
 ## Project Status

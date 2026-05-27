@@ -1,19 +1,12 @@
-import { Command } from "commander"
-import { runAgent } from "@repo/core"
+import { createCliRenderer, Text } from "@opentui/core"
 
-const program = new Command()
+const renderer = await createCliRenderer({
+  exitOnCtrlC: true,
+})
 
-program
-  .name("agent")
-  .description("My Agentic CLI")
-
-program
-  .command("chat")
-  .argument("<prompt>")
-  .action(async (prompt) => {
-    console.log("Agent thinking...")
-    const response = await runAgent(prompt)
-    console.log(response)
-  })
-
-program.parse()
+renderer.root.add(
+  Text({
+    content: "Hello, OpenTUI!",
+    fg: "#00FF00",
+  }),
+)
