@@ -2,7 +2,9 @@
   "extends": "@repo/tsconfig/node.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@opentui/react"
   },
-  "include": ["index.ts"]
+  "include": ["index.tsx", "components/**/*"]
 }
