@@ -6,5 +6,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@opentui/react"
   },
-  "include": ["index.tsx", "components/**/*"]
+  "include": ["index.tsx", "components/**/*", "command/**/*"]
 }

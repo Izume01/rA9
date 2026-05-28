@@ -20,12 +20,11 @@ function App() {
                 backgroundColor="#1A1A24"
                 padding={1}
                 paddingLeft={2}
-                border = {["left"]}
+                border={["left"]}
                 borderColor="#90e0ef"
                 width={80}
                 flexDirection="column"
                 alignItems="flex-start"
-                gap={1}
             >
                 <InputPrompt />
                 <Statusbar />

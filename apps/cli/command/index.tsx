@@ -1,0 +1,64 @@
+import { useRef } from "react";
+import { ScrollBox, type TextareaRenderable } from "@opentui/core";
+import { getFilteredCommands } from "./filterCommand";
+import { COMMANDS } from "./commands";
+import type { TypeCommand } from "./type";
+
+const MAX_VISIBLE_COMMANDS = 5;
+
+const MAX_COMMANDS_COL_SPACE =  Math.max(...COMMANDS.map(cmd => cmd.value.length)) + 4;
+
+interface UseCommandMenuProps {
+    inputValue : string;
+    onSelect : (command : TypeCommand | null) => void;
+    onExecute : (command : TypeCommand) => void;
+    currentIndex : number;
+    scrollRef : React.RefObject<any>;
+}
+
+export const useCommandMenu = ({
+    inputValue,
+    onSelect,
+    onExecute,
+    currentIndex,
+    scrollRef
+} : UseCommandMenuProps) => {
+    if (!inputValue.startsWith("/")) {
+        return null;
+    }
+
+    const filteredCommands = getFilteredCommands(inputValue);
+    const visibleCommands = filteredCommands.slice(0, MAX_VISIBLE_COMMANDS);
+
+    if (visibleCommands.length === 0) {
+        return (
+            <box paddingLeft={1}>
+                <text fg="#ff5555">No commands found for "{inputValue.slice(1)}"</text>
+            </box>
+        );
+    }
+
+    return (
+        <scrollbox ref={scrollRef} height={visibleCommands.length} border={["left"]} borderColor="#90e0ef">
+            {visibleCommands.map((cmd, idx) => {
+                const isSelected = idx === currentIndex;
+                return (
+                    <box 
+                        key={cmd.name}
+                        flexDirection="row"
+                        backgroundColor={isSelected ? "#1D2C3F" : undefined}
+                        paddingLeft={2}
+                        paddingRight={1}
+                    >
+                        <text fg={isSelected ? "#90e0ef" : "#ffffff"}>
+                            {cmd.value.padEnd(MAX_COMMANDS_COL_SPACE)}
+                        </text>
+                        <text fg={isSelected ? "#ffffff" : "#888888"}>
+                            {cmd.description}
+                        </text>
+                    </box>
+                );
+            })}
+        </scrollbox>
+    );
+};
