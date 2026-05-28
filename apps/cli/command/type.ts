@@ -1,5 +1,6 @@
 export interface CommandContext {
-    exit: () => void;
+    exit: () => void | Promise<void>;
+    args?: string;
 }
 
 export interface TypeCommand {

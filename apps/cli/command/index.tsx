@@ -18,8 +18,8 @@ interface UseCommandMenuProps {
 
 export const useCommandMenu = ({
     inputValue,
-    onSelect,
-    onExecute,
+    onSelect, 
+    onExecute, 
     currentIndex,
     scrollRef
 } : UseCommandMenuProps) => {
@@ -28,9 +28,8 @@ export const useCommandMenu = ({
     }
 
     const filteredCommands = getFilteredCommands(inputValue);
-    const visibleCommands = filteredCommands.slice(0, MAX_VISIBLE_COMMANDS);
 
-    if (visibleCommands.length === 0) {
+    if (filteredCommands.length === 0) {
         return (
             <box paddingLeft={1}>
                 <text fg="#ff5555">No commands found for "{inputValue.slice(1)}"</text>
@@ -38,16 +37,19 @@ export const useCommandMenu = ({
         );
     }
 
+    const height = Math.min(filteredCommands.length, MAX_VISIBLE_COMMANDS);
+
     return (
-        <scrollbox ref={scrollRef} height={visibleCommands.length} border={["left"]} borderColor="#90e0ef">
-            {visibleCommands.map((cmd, idx) => {
+        <scrollbox ref={scrollRef} height={height} border={["left"]} borderColor="#90e0ef">
+            {filteredCommands.map((cmd, idx) => {
                 const isSelected = idx === currentIndex;
                 return (
                     <box 
+                        id={"cmd-" + cmd.name}
                         key={cmd.name}
                         flexDirection="row"
                         backgroundColor={isSelected ? "#1D2C3F" : undefined}
-                        paddingLeft={2}
+                        paddingLeft={1}
                         paddingRight={1}
                     >
                         <text fg={isSelected ? "#90e0ef" : "#ffffff"}>
