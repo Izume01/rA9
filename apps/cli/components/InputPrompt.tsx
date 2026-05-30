@@ -18,21 +18,21 @@ const KEYBINDINGS_INPUTBOX: Keybinding[] = [
     { name: "return", shift: true, action: "newline" },
 ];
 
+import { useCliStore } from "../store/cliStore";
+
 interface InputPromptProps {
-    inputValue: string;
-    setInputValue: React.Dispatch<React.SetStateAction<string>>;
-    currentIndex: number;
-    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
     scrollRef: React.RefObject<any>;
+    onExit: () => void | Promise<void>;
 }
 
 function InputPrompt({
-    inputValue,
-    setInputValue,
-    currentIndex,
-    setCurrentIndex,
-    scrollRef
+    scrollRef,
+    onExit
 }: InputPromptProps) {
+    const inputValue = useCliStore((state) => state.inputValue);
+    const setInputValue = useCliStore((state) => state.setInputValue);
+    const currentIndex = useCliStore((state) => state.currentIndex);
+    const setCurrentIndex = useCliStore((state) => state.setCurrentIndex);
     const textareaRef = useRef<TextareaRenderable>(null);
     const { height } = useTerminalDimensions();
 
@@ -95,7 +95,7 @@ function InputPrompt({
                     // Execute action
                     if (selectedCommand.action) {
                         selectedCommand.action({
-                            exit: () => process.exit(0)
+                            exit: onExit
                         });
                     }
                 }
@@ -113,7 +113,7 @@ function InputPrompt({
                 setCurrentIndex(0);
                 if (selectedCommand.action) {
                     selectedCommand.action({
-                        exit: () => process.exit(0)
+                        exit: onExit
                     });
                 }
                 return;

@@ -1,21 +1,28 @@
 import { createCliRenderer } from "@opentui/core";
 import { createRoot } from "@opentui/react";
-import { useState, useRef } from "react";
+import { useRef, useEffect } from "react";
 import Header from "./components/Header";
 import Statusbar from "./components/Statusbar";
 import InputPrompt from "./components/InputPrompt";
 import { useCommandMenu } from "./command/index";
+import { ToastProvider, toast } from "./providers/toast";
 
 function App() {
-    const [inputValue, setInputValue] = useState("");
-    const [currentIndex, setCurrentIndex] = useState(0);
     const scrollRef = useRef<any>(null);
 
+    useEffect(() => {
+        // Trigger a beautiful success toast on startup to verify it works
+        toast.success("RA9 Code Terminal ready!");
+    }, []);
+
+    const cleanExit = async () => {
+        await cleanup();
+        process.exit(0);
+    };
+
     const commandMenu = useCommandMenu({
-        inputValue,
         onSelect: () => {},
         onExecute: () => {},
-        currentIndex,
         scrollRef
     });
 
@@ -30,6 +37,7 @@ function App() {
             gap={2}
         >
             <Header />
+            <ToastProvider />
             <box flexDirection="column" alignItems="center">
                 {commandMenu && (
                     <box width={80}>
@@ -47,11 +55,8 @@ function App() {
                     alignItems="flex-start"
                 >
                     <InputPrompt 
-                        inputValue={inputValue}
-                        setInputValue={setInputValue}
-                        currentIndex={currentIndex}
-                        setCurrentIndex={setCurrentIndex}
                         scrollRef={scrollRef}
+                        onExit={cleanExit}
                     />
                     <Statusbar />
                 </box>
