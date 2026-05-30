@@ -25,7 +25,7 @@ Ra9/
 
 | App | Description |
 |-----|-------------|
-| **`@repo/cli`** | Command-line interface powered by [Commander.js](https://github.com/tj/commander.js). Exposes a `chat` command that sends prompts to the agent runtime. |
+| **`@repo/cli`** | Interactive Terminal User Interface (TUI) powered by `@opentui/react` and `@opentui/core`. Provides a stateful command-line interface with a dynamic command menu, status bar, and real-time layout adjustments. |
 | **`@repo/server`** | [Express 5](https://expressjs.com) HTTP server exposing agent capabilities via REST API on port `3000`. |
 
 ### Packages
@@ -41,12 +41,36 @@ Ra9/
 ## Tech Stack
 
 - **Language** — TypeScript 6, targeting ES2022
-- **Runtime** — Node.js
+- **Runtime** — Node.js 20+ & Bun 1.1+
 - **Monorepo** — Bun workspaces + Turborepo
-- **CLI** — Commander.js, Chalk
+- **TUI Framework** — `@opentui/core`, `@opentui/react`, React 19
 - **Server** — Express 5
 - **Validation** — Zod
-- **Dev tooling** — tsx for fast TypeScript execution
+
+## CLI & TUI Features
+
+The `@repo/cli` package implements a stateful terminal-based experience featuring:
+
+- **Command Autocomplete** — Auto-suggests and completes commands starting with a slash (`/`).
+- **Scrollable Command Menu** — Pressing `/` opens an interactive, scrollable popover listing all available commands.
+- **Key Interceptions** — Use `Up` and `Down` arrow keys to navigate suggestions, `Tab` to autocomplete the highlighted option, `Enter` to run the command, and `Escape` to clear.
+- **Adaptive Layout** — Automatically scales TUI components and heights according to current terminal dimensions.
+- **Status Bar** — Displays active model and runtime details (e.g., `opus-4-6`).
+- **ASCII Font Header** — Renders a custom ascii-font block header.
+
+### Supported Commands
+
+| Command | Description |
+|---------|-------------|
+| `/new` | Create a new conversation |
+| `/exit` | Exit the application |
+| `/help` | Show the help menu |
+| `/models` | List available models |
+| `/logout` | Logout from your account |
+| `/agent` | Start an agent with a specified goal |
+| `/sessions` | List active sessions |
+| `/theme` | Change the terminal color theme |
+| `/usage` | Show API usage statistics |
 
 ## Getting Started
 
@@ -63,12 +87,14 @@ bun install
 
 ### Development
 
+To start the applications in development mode:
+
 ```bash
 # Run all apps in dev mode
 bun dev
 
-# Run just the CLI
-bun --filter @repo/cli dev
+# Run just the TUI CLI
+bun dev:cli
 
 # Run just the server
 bun --filter @repo/server dev
@@ -78,13 +104,6 @@ bun --filter @repo/server dev
 
 ```bash
 bun build
-```
-
-### CLI Usage
-
-```bash
-# Send a prompt to the agent
-bun --filter @repo/cli dev chat "explain this function"
 ```
 
 ## Project Status
