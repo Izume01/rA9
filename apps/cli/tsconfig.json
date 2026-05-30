@@ -6,5 +6,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@opentui/react"
   },
-  "include": ["index.tsx", "components/**/*", "command/**/*"]
+  "include": ["index.tsx", "components/**/*", "command/**/*", "providers/**/*", "store/**/*" , "providers/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

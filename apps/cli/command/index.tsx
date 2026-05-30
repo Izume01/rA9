@@ -4,25 +4,26 @@ import { getFilteredCommands } from "./filterCommand";
 import { COMMANDS } from "./commands";
 import type { TypeCommand } from "./type";
 
+import { useCliStore } from "../store/cliStore";
+
 const MAX_VISIBLE_COMMANDS = 5;
 
 const MAX_COMMANDS_COL_SPACE =  Math.max(...COMMANDS.map(cmd => cmd.value.length)) + 4;
 
 interface UseCommandMenuProps {
-    inputValue : string;
     onSelect : (command : TypeCommand | null) => void;
     onExecute : (command : TypeCommand) => void;
-    currentIndex : number;
     scrollRef : React.RefObject<any>;
 }
 
 export const useCommandMenu = ({
-    inputValue,
     onSelect, 
     onExecute, 
-    currentIndex,
     scrollRef
 } : UseCommandMenuProps) => {
+    const inputValue = useCliStore((state) => state.inputValue);
+    const currentIndex = useCliStore((state) => state.currentIndex);
+
     if (!inputValue.startsWith("/")) {
         return null;
     }
