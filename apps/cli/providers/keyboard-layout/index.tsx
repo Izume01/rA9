@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef
 } from "react";
-import { useKeyboard, useRenderer } from "@opentui/react";
+import { useKeyboard } from "@opentui/react";
 
 
 type Responder = () => boolean;
@@ -58,12 +58,9 @@ export const useKeyboardLayoutStore = create<KeyboardLayoutContextValue>((set) =
 }))
 
 export const KeyboardLayoutProvider = ({ children }: { children: React.ReactNode }): React.ReactNode => {
-  const renderer = useRenderer();
-
   useKeyboard((event) => {
     if (!event.ctrl || event.name !== "c") return;
 
-    // Retrieve the absolute latest stack and responders to avoid stale closures
     const { stack, responders } = useKeyboardLayoutStore.getState();
 
     for (let i = stack.length - 1; i >= 0; i--) {
@@ -74,7 +71,6 @@ export const KeyboardLayoutProvider = ({ children }: { children: React.ReactNode
         return;
       }
     }
-    renderer.destroy();
   })
   return <>{children}</>;
 }

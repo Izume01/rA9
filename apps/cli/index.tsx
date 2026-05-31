@@ -7,22 +7,30 @@ import InputPrompt from "./components/InputPrompt";
 import { useCommandMenu } from "./command/index";
 import { ToastProvider, toast } from "./providers/toast";
 import { KeyboardLayoutProvider, useKeyboardLayoutStore } from "./providers/keyboard-layout";
-import { DialogProvider } from "./providers/dialog";
+import { DialogProvider, useDialogStore } from "./providers/dialog";
 import { useTheme } from "./providers/theme/theme-store";
+import { ExitConfirmDialog } from "./components/ExitConfirmDialog";
 
 function App() {
     const scrollRef = useRef<any>(null);
     const { colorTheme: colors } = useTheme();
 
-    useEffect(() => {
-        // Trigger a beautiful success toast on startup to verify it works
-        toast.success("RA9 Code Terminal ready!");
-    }, []);
-
     const cleanExit = async () => {
         await cleanup();
         process.exit(0);
     };
+
+    useEffect(() => {
+        toast.success("RA9 Code Terminal ready!");
+
+        useKeyboardLayoutStore.getState().setResponder("base", () => {
+            useDialogStore.getState().open({
+                title: "Exit Application",
+                children: <ExitConfirmDialog onConfirm={cleanExit} />,
+            });
+            return true;
+        });
+    }, []);
 
     const commandMenu = useCommandMenu({
         onSelect: () => {},
@@ -69,7 +77,7 @@ function App() {
     );
 }
 
-const renderer = await createCliRenderer();
+const renderer = await createCliRenderer({ exitOnCtrlC: false });
 const root = createRoot(renderer);
 
 // Cleanup function for graceful shutdown
@@ -81,20 +89,6 @@ const cleanup = async () => {
         // Ignore cleanup errors
     }
 };
-
-// Handle Ctrl+C and other termination signals
-process.on('SIGINT', async () => {
-    const { stack, responders } = useKeyboardLayoutStore.getState();
-    for (let i = stack.length - 1; i >= 0; i--) {
-        const id = stack[i];
-        const responder = responders.get(id);
-        if (responder && responder()) {
-            return;
-        }
-    }
-    await cleanup();
-    process.exit(0);
-});
 
 process.on('SIGTERM', async () => {
     await cleanup();
