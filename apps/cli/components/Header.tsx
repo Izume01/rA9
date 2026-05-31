@@ -1,5 +1,7 @@
+import { useTheme } from "../providers/theme/theme-store";
 
 function Header() {
+    const { colorTheme: colors } = useTheme();
     return (
         <box
             justifyContent="center"
@@ -11,7 +13,7 @@ function Header() {
                 gap={0.5}
                 alignItems="center"
             >
-                <ascii-font font="block" text="RA9 CODE" color="#90e0ef" />
+                <ascii-font font="block" text="RA9 CODE" color={colors.primary} />
             </box>
         </box>
     )
