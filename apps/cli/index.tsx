@@ -6,9 +6,13 @@ import Statusbar from "./components/Statusbar";
 import InputPrompt from "./components/InputPrompt";
 import { useCommandMenu } from "./command/index";
 import { ToastProvider, toast } from "./providers/toast";
+import { KeyboardLayoutProvider, useKeyboardLayoutStore } from "./providers/keyboard-layout";
+import { DialogProvider } from "./providers/dialog";
+import { useTheme } from "./providers/theme/theme-store";
 
 function App() {
     const scrollRef = useRef<any>(null);
+    const { colorTheme: colors } = useTheme();
 
     useEffect(() => {
         // Trigger a beautiful success toast on startup to verify it works
@@ -33,7 +37,7 @@ function App() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            backgroundColor={"#0D0D12"}
+            backgroundColor={colors.background}
             gap={2}
         >
             <Header />
@@ -45,11 +49,11 @@ function App() {
                     </box>
                 )}
                 <box
-                    backgroundColor="#1A1A24"
+                    backgroundColor={colors.surface}
                     padding={1}
                     paddingLeft={2}
                     border={["left"]}
-                    borderColor="#90e0ef"
+                    borderColor={colors.primary}
                     width={80}
                     flexDirection="column"
                     alignItems="flex-start"
@@ -80,6 +84,14 @@ const cleanup = async () => {
 
 // Handle Ctrl+C and other termination signals
 process.on('SIGINT', async () => {
+    const { stack, responders } = useKeyboardLayoutStore.getState();
+    for (let i = stack.length - 1; i >= 0; i--) {
+        const id = stack[i];
+        const responder = responders.get(id);
+        if (responder && responder()) {
+            return;
+        }
+    }
     await cleanup();
     process.exit(0);
 });
@@ -89,4 +101,10 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
-root.render(<App />);
+root.render(
+    <KeyboardLayoutProvider>
+        <DialogProvider>
+            <App />
+        </DialogProvider>
+    </KeyboardLayoutProvider>
+);
