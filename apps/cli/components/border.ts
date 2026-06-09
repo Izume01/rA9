@@ -52,3 +52,20 @@ export const DashedSplitBorderChars: BorderCharacters = {
   rightT: "┤",
   cross: "┼",
 };
+
+/**
+ * EmptyBorder is used when you want to supply custom partial borders.
+ */
+export const EmptyBorder: BorderCharacters = {
+  topLeft: " ",
+  topRight: " ",
+  bottomLeft: " ",
+  bottomRight: " ",
+  horizontal: " ",
+  vertical: " ",
+  topT: " ",
+  bottomT: " ",
+  leftT: " ",
+  rightT: " ",
+  cross: " ",
+};

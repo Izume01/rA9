@@ -23,11 +23,15 @@ import { useCliStore } from "../store/cliStore";
 interface InputPromptProps {
     scrollRef: React.RefObject<any>;
     onExit: () => void | Promise<void>;
+    onSubmit?: (text: string) => void;
+    disabled?: boolean;
 }
 
 function InputPrompt({
     scrollRef,
-    onExit
+    onExit,
+    onSubmit,
+    disabled
 }: InputPromptProps) {
     const inputValue = useCliStore((state) => state.inputValue);
     const setInputValue = useCliStore((state) => state.setInputValue);
@@ -125,6 +129,7 @@ function InputPrompt({
             // Process standard text submission
             textareaRef.current?.clear();
             setInputValue("");
+            onSubmit?.(text);
         }
     };
 
@@ -134,8 +139,8 @@ function InputPrompt({
             width="100%"
             height={inputHeight}
             keyBindings={KEYBINDINGS_INPUTBOX}
-            focused={true}
-            placeholder="Ask anything... 'Fix a bug in the database'" 
+            focused={!disabled}
+            placeholder={disabled ? "Processing..." : "Ask anything... 'Fix a bug in the database'"} 
             onSubmit={handleSubmit}
             onContentChange={handleContentChange}
             onKeyDown={handleKeyDown}

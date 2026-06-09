@@ -1,3 +1,4 @@
+import React from "react";
 import { mkdir , readFileSync , writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -36,4 +37,12 @@ export function saveThemeToConfig(themeName: string) {
         console.error("Failed to save theme config:" , error);
     }
 }
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+    return <>{children}</>;
+}
+
+export { useTheme, useThemeStore } from "./theme-store";
+
+
 

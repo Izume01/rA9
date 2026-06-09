@@ -1,4 +1,4 @@
-import { useTheme } from "../providers/theme/theme-store";
+import { useTheme } from "../providers/theme";
 
 function Header() {
     const { colorTheme: colors } = useTheme();

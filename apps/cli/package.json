@@ -13,7 +13,9 @@
     "@repo/core": "workspace:*",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
+    "opentui-spinner": "^0.0.7",
     "react": "^19.2.6",
+    "react-router": "^7.17.0",
     "tui": "^1.0.0",
     "zustand": "^5.0.14"
   },

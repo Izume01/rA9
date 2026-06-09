@@ -1,7 +1,8 @@
 import type { TypeCommand } from "./type";
 import { toast } from "../providers/toast";
 import { useDialogStore } from "../providers/dialog";
-import { useThemeStore } from "../providers/theme/theme-store";
+import { useThemeStore } from "../providers/theme";
+
 import { THEMES } from "../theme";
 import React, { useState } from "react";
 import { TextAttributes } from "@opentui/core";
